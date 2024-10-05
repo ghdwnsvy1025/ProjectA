@@ -124,3 +124,6 @@ Session.vim
 
 # Visual Studio
 .vs
+
+# Asset 
+Content/ProjectA/Assets/*
