@@ -7,21 +7,7 @@
 		{
 			"Name": "ProjectA",
 			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine"
-			]
-		},
-		{
-			"Name": "ProjectAGAS",
-			"Type": "Runtime",
-			"LoadingPhase": "PostDefault",
-			"AdditionalDependencies": [
-				"Engine",
-				"GameplayAbilities",
-				"ProjectA",
-				"UMG"
-			]
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
@@ -31,10 +17,6 @@
 			"TargetAllowList": [
 				"Editor"
 			]
-		},
-		{
-			"Name": "GameplayAbilities",
-			"Enabled": true
 		}
 	]
 }
