@@ -6,9 +6,7 @@
 #include "UI/PAUIBase.h"
 #include "PAUI_TileInteractableMouse.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class PROJECTA_API UPAUI_TileInteractableMouse : public UPAUIBase
 {
@@ -19,15 +17,23 @@ protected:
 
 protected:
 	UFUNCTION(BlueprintCallable)
-	void OnVisibilityChangedFunc(ESlateVisibility SlateVisibility);
-
-	UFUNCTION(BlueprintCallable)
 	void OnButtonClickedFunc();
 
+	UFUNCTION(BlueprintCallable)
+	void OnButtonHoveredFunc();
+
+	UFUNCTION(BlueprintCallable)
+	void OnButtonUnHoveredFunc();
+
+private:
+	void SetOppacity(bool IsZero);
 protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<class UTextBlock> TxtStep;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<class UButton> TileButton;
+
+private:
+	FLinearColor OriginalColor;
 };

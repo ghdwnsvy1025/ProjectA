@@ -8,7 +8,7 @@ void UPATile_WidgetComponent::InitWidget()
 {
 	Super::InitWidget();
 
-	SetVisibility(true);
+	// SetVisibility(true);
 }
 
 void UPATile_WidgetComponent::ShowWidget()
@@ -17,6 +17,7 @@ void UPATile_WidgetComponent::ShowWidget()
 	{
 		GetWidget()->SetVisibility(ESlateVisibility::Visible);
 	}
+	
 }
 
 void UPATile_WidgetComponent::HiddenWidget()

@@ -3,24 +3,24 @@
 
 #include "PACharacterPlayer.h"
 
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "Camera/CameraComponent.h"
 #include "Components/WidgetInteractionComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Player/PAPlayerController.h"
 
 APACharacterPlayer::APACharacterPlayer()
 {
-	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(RootComponent);
-	FollowCamera->bUsePawnControlRotation = true;
-	
-	
-	WidgetInteractionComponent = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("WidgetInteractionComponent"));
-	WidgetInteractionComponent->SetupAttachment(FollowCamera);
-
-	if(WidgetInteractionComponent)
-	{
-		WidgetInteractionComponent->InteractionDistance = 2000.f;
-		WidgetInteractionComponent->bShowDebug = true;
-		WidgetInteractionComponent->bEnableHitTesting= true;
-		WidgetInteractionComponent->DebugColor=FColor::Green;
-	}
 }
+
+void APACharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+
+	
+}
+
+

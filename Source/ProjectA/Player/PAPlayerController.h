@@ -16,16 +16,4 @@ class PROJECTA_API APAPlayerController : public APlayerController
 
 public:
 	APAPlayerController();
-
-	virtual void SetupInputComponent() override;
-	void MouseMove(const FInputActionValue& Value);
-
-protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = true))
-	TObjectPtr<class UInputAction> MouseMoveAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = true))
-	TObjectPtr<class UInputMappingContext> MouseMoveContext;
-
-
 };

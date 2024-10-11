@@ -14,7 +14,7 @@ APATile::APATile()
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
 	RootComponent = StaticMesh;
-	StaticMesh->SetCollisionProfileName(TEXT("NoCollision"));
+	// StaticMesh->SetCollisionProfileName(TEXT("NoCollision"));
 	// StaticMesh->SetCollisionProfileName(TEXT("BlockAll"));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> TileMeshRef
@@ -38,24 +38,31 @@ APATile::APATile()
 		HoveringUI->SetWidgetClass(HoveringTileRef.Class);
 		HoveringUI->SetWidgetSpace(EWidgetSpace::World);
 	}
-
-
+	
 }
 
 void APATile::NotifyActorBeginCursorOver()
 {
 	Super::NotifyActorBeginCursorOver();
-	PA_LOG(LogTest, Log, TEXT("Hovered"));
-
-	HoveringUI->ShowWidget();
+	// PA_LOG(LogTest, Log, TEXT("Hovered"));
+	//
+	// if(HoveringUI->GetWidget()->IsVisible() == false)
+	// 	HoveringUI->ShowWidget();
 }
+// 객체 Begin -> 위젯 켜짐 -> 객체 End But Trace True
+// -> 위젯 UnHover -> 델리게이트 실행 -> 객체 Begin
+// But Trace in -> 위젯 끄지 않음 -> 객체 End -> 위젯 끔.
+// Trace out -> 위젯 끔
+
+
 
 void APATile::NotifyActorEndCursorOver()
 {
 	Super::NotifyActorEndCursorOver();
 
-	PA_LOG(LogTest, Log, TEXT("Over Hover"));
-	HoveringUI->HiddenWidget();
+	// PA_LOG(LogTest, Log, TEXT("Over Hover"));
+	// if(HoveringUI->GetWidget()->IsVisible() == true)
+	// 	HoveringUI->HiddenWidget();
 }
 
 
