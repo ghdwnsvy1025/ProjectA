@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Data/PAUIClassName.h"
 #include "PAUIManager.generated.h"
 
 /**
@@ -21,9 +20,8 @@ public:
 	void Init(UWorld* World);
 	void ShowPopup(const FName& Name);
 	void ShowScene(const FName& MapName);
-
+	void ClosePopup();
 private:
-	void ReadTable();
 	void CreateAndSaveUI(UWorld* World);
 	void ExtractStringParts(const FString& InputString, FString& OutUIType, FString& OutName);
 private:
@@ -38,7 +36,6 @@ private:
 	
 	TQueue<TObjectPtr<class UUserWidget>> PopupStack;
 
-	TArray<FPAUIClassName> UIClassNameTable;
 private:
 	int LayerOrder;
 };

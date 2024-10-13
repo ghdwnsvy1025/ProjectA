@@ -3,14 +3,15 @@
 
 #include "Manager/PAUIManager.h"
 
+#include "PADataManager.h"
 #include "ProjectA.h"
 
 #include "Blueprint/UserWidget.h"
+#include "Data/PAUIClassTable.h"
 
 UPAUIManager::UPAUIManager()
 {
 	LayerOrder = 10;
-	ReadTable();
 }
 
 UPAUIManager& UPAUIManager::Get()
@@ -35,14 +36,14 @@ void UPAUIManager::Init(UWorld* World)
 
 void UPAUIManager::ShowPopup(const FName& Name)
 {
-	if(Scenes.Find(Name) == false)
+	if (Popups.Find(Name) == false)
 	{
 		PA_LOG(LogTest, Error, TEXT("No %s UI"), *Name.ToString());
 		return;
 	}
 	UUserWidget* Widget = Popups[Name];
 	ensure(Widget);
-	
+
 	PopupStack.Enqueue(Widget);
 	if (Widget->IsInViewport() == false)
 	{
@@ -56,13 +57,13 @@ void UPAUIManager::ShowPopup(const FName& Name)
 
 void UPAUIManager::ShowScene(const FName& MapName)
 {
-	if(Scenes.Find(MapName) == false)
+	if (Scenes.Find(MapName) == false)
 	{
 		PA_LOG(LogTest, Error, TEXT("Failed To %s SceneUI"), *MapName.ToString());
 		return;
 	}
 	UUserWidget* Widget = Scenes[MapName];
-	
+
 	Scene = Widget;
 	if (Scene->IsInViewport() == false)
 	{
@@ -74,72 +75,73 @@ void UPAUIManager::ShowScene(const FName& MapName)
 	}
 }
 
-void UPAUIManager::ReadTable()
+void UPAUIManager::ClosePopup()
 {
-	static ConstructorHelpers::FObjectFinder<UDataTable> DataTableRef
-		(TEXT("/Script/Engine.DataTable'/Game/Data/PAUIClassNameTable.PAUIClassNameTable'"));
-	if (DataTableRef.Object)
+	if (PopupStack.IsEmpty() == false)
 	{
-		const UDataTable* DataTable = DataTableRef.Object;
-		check(DataTable->GetRowMap().Num()>0);
+		TObjectPtr<UUserWidget> Widget;
+		PopupStack.Dequeue(Widget);
 
-		TArray<uint8*> ValueArray;
-		DataTable->GetRowMap().GenerateValueArray(ValueArray);
-		Algo::Transform(ValueArray, UIClassNameTable,
-		                [](uint8* Value)
-		                {
-			                return *reinterpret_cast<FPAUIClassName*>(Value);
-		                }
-		);
+		if (Widget->IsVisible())
+		{
+			Widget->SetVisibility(ESlateVisibility::Hidden);
+			--LayerOrder;
+		}
 	}
 }
 
 void UPAUIManager::CreateAndSaveUI(UWorld* World)
 {
-	if(UIClassNameTable.IsEmpty())
-	{
-		PA_LOG(LogTest,Error,TEXT("Failed To Read UITable!"));
-		return;;
-	}
-
-	for(FPAUIClassName name : UIClassNameTable)
+	CHECK_NULLPTR_RETURN(World,);
+	TMap<FName, FPAUIClassTable> Datas;
+	
+	Datas = (World->GetSubsystem<UPADataManager>()->GetData<FPAUIClassTable>(TEXT("FPAUIClassTable")));
+	
+	for (auto& Pair : Datas)
 	{
 		// Create Widget
-		FString UIType;
-		FString UIName;
-
-		ExtractStringParts(name.ClassName.ToString(), UIType, UIName);
-		UClass* WidgetClass = StaticLoadClass(UUserWidget::StaticClass(), nullptr,
-			*FString::Printf(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_%s.WBP_%s_C'"), *UIName, *UIName));
-
-		if(WidgetClass == nullptr)
+		
+		FPAUIClassTable* Table = &Pair.Value;
+		if (Table->Tag.IsNone())
 		{
-			PA_LOG(LogTest,Warning,TEXT("Failed To Read %s Widget Bluprint!"), *UIName);
 			continue;
 		}
+		FString UIType;
+		FString UIName;
 		
-		if(World)
+		ExtractStringParts(Table->ClassName.ToString(), UIType, UIName);
+		UClass* WidgetClass = StaticLoadClass(UUserWidget::StaticClass(), nullptr,
+		                                      *FString::Printf(
+			                                      TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_%s.WBP_%s_C'"),
+			                                      *UIName, *UIName));
+	
+		if (WidgetClass == nullptr)
+		{
+			PA_LOG(LogTest, Warning, TEXT("Failed To Read %s Widget Bluprint!"), *UIName);
+			continue;
+		}
+	
+		if (World)
 		{
 			UUserWidget* Widget = CreateWidget<UUserWidget>(World, WidgetClass);
-			
-			if(Widget == nullptr)
+	
+			if (Widget == nullptr)
 			{
-				PA_LOG(LogTest,Error,TEXT("Failed To Read %s Widget"), *UIName);
+				PA_LOG(LogTest, Error, TEXT("Failed To Read %s Widget"), *UIName);
 				return;
 			}
-		
+	
 			// Save Widget
-			if(UIType ==TEXT("UIPopup"))
+			if (UIType == TEXT("UIPopup"))
 			{
-				Popups.Emplace(name.ClassName, Widget);
+				Popups.Emplace(Table->Tag, Widget);
 			}
-			else if(UIType ==TEXT("UIScene"))
+			else if (UIType == TEXT("UIScene"))
 			{
-				Scenes.Emplace(name.ClassName, Widget);
+				Scenes.Emplace(Table->Tag, Widget);
 			}
-
-			PA_LOG(LogTest,Log,TEXT("Success To Read %s Widget!"), *UIName);
-
+	
+			PA_LOG(LogTest, Log, TEXT("Success To Read %s Widget!"), *UIName);
 		}
 	}
 }
@@ -147,7 +149,7 @@ void UPAUIManager::CreateAndSaveUI(UWorld* World)
 void UPAUIManager::ExtractStringParts(const FString& InputString, FString& OutUIType, FString& OutName)
 {
 	// "UPA 제거"
-	FString CleanedString = InputString.Replace(TEXT("UPA"), TEXT("")); 
+	FString CleanedString = InputString.Replace(TEXT("UPA"), TEXT(""));
 
 	// "_" 기준으로 분리
 	CleanedString.Split(TEXT("_"), &OutUIType, &OutName);

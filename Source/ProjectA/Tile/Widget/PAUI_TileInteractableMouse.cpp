@@ -23,22 +23,17 @@ void UPAUI_TileInteractableMouse::NativeOnInitialized()
 
 void UPAUI_TileInteractableMouse::OnButtonClickedFunc()
 {
-	PA_LOG(LogTest, Log, TEXT("Button Clicked"));
-
+	OnButtonDelgate.Broadcast();
 }
 
 void UPAUI_TileInteractableMouse::OnButtonHoveredFunc()
 {
-	PA_LOG(LogTest, Log, TEXT("Button Hovered"));
 	SetOppacity(false);
-
 }
 
 void UPAUI_TileInteractableMouse::OnButtonUnHoveredFunc()
 {
-	PA_LOG(LogTest, Log, TEXT("Button UnHovered"));
 	SetOppacity(true);
-
 }
 
 void UPAUI_TileInteractableMouse::SetOppacity(bool IsZero)
@@ -55,6 +50,13 @@ void UPAUI_TileInteractableMouse::SetOppacity(bool IsZero)
 	FLinearColor TransparentColor = FLinearColor(OriginalColor.R, OriginalColor.G, OriginalColor.B, Alpha);
 	ColorAndOpacity = TransparentColor;
 	SetColorAndOpacity(ColorAndOpacity);
-	PA_LOG(LogTest, Log, TEXT("%f"), ColorAndOpacity.A);
+
 }
 
+// 음 PATile -> TileInterac : 이거는 모든 타일마다 공통적인 거라서 하나만 필요해.
+// Tag를 BP_PATile에 설정 -> TileInterac에 델리게이트 생성 후 클릭시 발동 -> 델리게이트에 PA함수가 연동되어 있어 함수 발동
+// -> PATile의 Tag를 가지고 있는 GA 발동 -> ??
+// 아니면 TileInteraction에서 직접 UI호출?? 상관 없음.
+// 어짜피 Tag를 통해서 그거에 맞는 UI를 호출해야함.
+// Tag를 통해 UI를 찾아서 Show한다?? 이거 였잖아. 현재 Name과 UI가 묶여있느니, Tag와 Name을 묶으면 되겠네.
+// Tag == FGamePlayTag.GetTagName == FName

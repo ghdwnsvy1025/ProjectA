@@ -27,3 +27,4 @@ void UPATile_WidgetComponent::HiddenWidget()
 		GetWidget()->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
+

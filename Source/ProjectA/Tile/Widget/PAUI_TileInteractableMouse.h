@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "UI/PAUIBase.h"
 #include "PAUI_TileInteractableMouse.generated.h"
-
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FButtonDelegate);
 UCLASS()
 class PROJECTA_API UPAUI_TileInteractableMouse : public UPAUIBase
 {
@@ -27,6 +27,10 @@ protected:
 
 private:
 	void SetOppacity(bool IsZero);
+public:
+	UPROPERTY(BlueprintAssignable)
+	FButtonDelegate OnButtonDelgate;
+	
 protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<class UTextBlock> TxtStep;
@@ -34,6 +38,10 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<class UButton> TileButton;
 
+	UPROPERTY(EditAnywhere, Category = TileTag)
+	FGameplayTag TileTag;
 private:
 	FLinearColor OriginalColor;
+
+	
 };

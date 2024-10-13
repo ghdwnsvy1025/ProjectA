@@ -21,9 +21,9 @@ void APAGameMode::StartPlay()
 	
 	FString LevelName = GetWorld()->GetMapName();
 	LevelName.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
-
-	FString PreName = TEXT("UPAUIScene_");
+	
+	FString PreName = TEXT("UI.Scene.");
 	LevelName = PreName + LevelName;
 	
-	// UPAUIManager::Get().ShowScene(GetData(LevelName));
+	UPAUIManager::Get().ShowScene(GetData(LevelName));
 }

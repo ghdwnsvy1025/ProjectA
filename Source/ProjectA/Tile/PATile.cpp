@@ -8,7 +8,7 @@
 #include "Components/WidgetInteractionComponent.h"
 #include "Manager/PAUIManager.h"
 #include "Widget/PATile_WidgetComponent.h"
-
+#include "Widget/PAUI_TileInteractableMouse.h"
 APATile::APATile()
 {
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
@@ -38,33 +38,8 @@ APATile::APATile()
 		HoveringUI->SetWidgetClass(HoveringTileRef.Class);
 		HoveringUI->SetWidgetSpace(EWidgetSpace::World);
 	}
-	
+
 }
-
-void APATile::NotifyActorBeginCursorOver()
-{
-	Super::NotifyActorBeginCursorOver();
-	// PA_LOG(LogTest, Log, TEXT("Hovered"));
-	//
-	// if(HoveringUI->GetWidget()->IsVisible() == false)
-	// 	HoveringUI->ShowWidget();
-}
-// 객체 Begin -> 위젯 켜짐 -> 객체 End But Trace True
-// -> 위젯 UnHover -> 델리게이트 실행 -> 객체 Begin
-// But Trace in -> 위젯 끄지 않음 -> 객체 End -> 위젯 끔.
-// Trace out -> 위젯 끔
-
-
-
-void APATile::NotifyActorEndCursorOver()
-{
-	Super::NotifyActorEndCursorOver();
-
-	// PA_LOG(LogTest, Log, TEXT("Over Hover"));
-	// if(HoveringUI->GetWidget()->IsVisible() == true)
-	// 	HoveringUI->HiddenWidget();
-}
-
 
 void APATile::PostInitializeComponents()
 {
@@ -74,6 +49,31 @@ void APATile::PostInitializeComponents()
 
 	// FGameplayAbilitySpec Spec(TargetAblitiyClass);
 	// ASC->GiveAbility(Spec);
+
+}
+
+void APATile::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// Temp -> 시점을 게임 시작 후에 해줘야함. 그전에 위젯이 안생길 수도 있음
+	// 나중에 델리게이트 말고 그냥 외부에서 ShowPopupUI함수를 호출해서 팝업을 띄울 것임 
+	UUserWidget* Test = HoveringUI->GetWidget();
+	if(Test)
+	{
+		UPAUI_TileInteractableMouse* TileWidget = CastChecked<UPAUI_TileInteractableMouse>(Test);
+		if(TileWidget)
+		{
+			TileWidget->OnButtonDelgate.AddDynamic(this, &APATile::ShowPopupUI);
+		}
+	}
+	
+
+}
+
+void APATile::ShowPopupUI()
+{
+	UPAUIManager::Get().ShowPopup(TileTag.GetTagName());
 }
 
 class UAbilitySystemComponent* APATile::GetAbilitySystemComponent() const
