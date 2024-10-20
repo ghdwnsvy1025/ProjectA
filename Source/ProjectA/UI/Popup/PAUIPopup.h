@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Blueprint/UserWidget.h"
 #include "UI/PAUIBase.h"
 #include "PAUIPopup.generated.h"
@@ -17,5 +18,6 @@ class PROJECTA_API UPAUIPopup : public UPAUIBase
 
 protected:
 	virtual void NativeOnInitialized() override;
+
 
 };

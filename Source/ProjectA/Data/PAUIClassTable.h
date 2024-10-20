@@ -10,9 +10,9 @@ struct FPAUIClassTable : public FPADataTable
 	
 	FPAUIClassTable(){};
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UICLASSDATA)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UIClassData)
 	FName ClassName;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UICLASSDATA)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UIClassData)
 	FName Tag;
 };

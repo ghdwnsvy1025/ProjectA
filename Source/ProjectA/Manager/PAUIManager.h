@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/SlateWrapperTypes.h"
 #include "PAUIManager.generated.h"
 
 /**
@@ -18,12 +19,26 @@ public:
 
 	static UPAUIManager& Get();
 	void Init(UWorld* World);
-	void ShowPopup(const FName& Name);
+	void ShowPopup(const FName& Name, ESlateVisibility Visible = ESlateVisibility::Visible);
 	void ShowScene(const FName& MapName);
 	void ClosePopup();
+
+	class UUserWidget* GetPopupUI(const FName& Name)
+	{
+		if (Popups.Find(Name))
+		{
+			return  Popups[Name];
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+
 private:
 	void CreateAndSaveUI(UWorld* World);
 	void ExtractStringParts(const FString& InputString, FString& OutUIType, FString& OutName);
+
 private:
 	UPROPERTY(EditAnywhere, Category = UI)
 	TMap<FName, TObjectPtr<class UUserWidget>> Popups;
@@ -33,8 +48,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = UI)
 	TObjectPtr<class UUserWidget> Scene;
-	
-	TQueue<TObjectPtr<class UUserWidget>> PopupStack;
+
+	UPROPERTY(EditAnywhere, Category = UI)
+	TArray<TObjectPtr<class UUserWidget>> PopupStack;
 
 private:
 	int LayerOrder;

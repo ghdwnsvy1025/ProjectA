@@ -1,7 +1,9 @@
 #pragma once
+
 #include "PADataTable.h"
-#include "Engine/DataTable.h"
 #include "PAShopTable.generated.h"
+
+
 
 USTRUCT(BlueprintType)
 struct FPAShopTable : public FPADataTable
@@ -10,9 +12,20 @@ struct FPAShopTable : public FPADataTable
 	
 	FPAShopTable(){};
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SHOPDATA)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShopData)
 	int Quantity;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SHOPDATA)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShopData)
 	int Price;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShopData)
+	int ItemIndex;
+};
+USTRUCT(BlueprintType)
+struct FInnerShopTable
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShopManager")
+	TMap<FName, FPAShopTable> InnerMap; 
 };

@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/Button.h"
-#include "Components/HorizontalBox.h"
 #include "Components/ScrollBox.h"
+#include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "UI/Popup/PAUIPopup.h"
 #include "PAUIPopup_Shop.generated.h"
@@ -20,17 +20,27 @@ class PROJECTA_API UPAUIPopup_Shop : public UPAUIPopup
 
 public:
 	virtual void NativeOnInitialized() override;
+	virtual void NativeConstruct() override;
 	void Refresh();
+	UFUNCTION()
+	void OnButtonClickedFun();
 private:
 	UFUNCTION()
 	void OnVisibilityChangedFunc(ESlateVisibility CurVisibility);
+
 protected:
 	FOnVisibilityChangedEvent OnVisibilityChangedEvent;
 
 	UPROPERTY(meta = (BindWidget))
-	UScrollBox* ScrollBox;
+	TObjectPtr<UScrollBox> ScrollBox;
 	
 	UPROPERTY(meta = (BindWidget))
-	UVerticalBox* VerticalBox;
+	TObjectPtr<UVerticalBox> VerticalBox;
 
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UButton> ExitBtn;
+
+private:
+	uint8 bIsInited : 1;
+	uint8 bIsModify : 1;
 };

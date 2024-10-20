@@ -3,15 +3,3 @@
 
 #include "UI/PAUIBase.h"
 
-
-class UAbilitySystemComponent* UPAUIBase::GetAbilitySystemComponent() const
-{
-	return  ASC;
-}
-
-void UPAUIBase::NativeOnInitialized()
-{
-	Super::NativeOnInitialized();
-
-
-}

@@ -9,6 +9,9 @@ struct FPADataTable : public FTableRowBase
 	
 	FPADataTable(){};
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = DATA)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Data)
 	FName TableName;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Data)
+	int DataIndex;
 };
