@@ -95,8 +95,8 @@ void UPAUIManager::CreateAndSaveUI(UWorld* World)
 	CHECK_NULLPTR_RETURN(World,);
 	TMap<FName, FPAUIClassTable> Datas;
 	
-	Datas = (World->GetSubsystem<UPADataManager>()->GetData<FPAUIClassTable>(TEXT("FPAUIClassTable")));
-	
+	World->GetSubsystem<UPADataManager>()->LoadData<FPAUIClassTable>(TEXT("PAUIClassNameTable"), Datas);
+
 	for (auto& Pair : Datas)
 	{
 		// Create Widget
