@@ -23,10 +23,10 @@ public:
 	void OnVisibilityChangedEventFunc(ESlateVisibility SlateVisibility);
 	
 	UFUNCTION(BlueprintCallable, Category =Hovering)
-	void ShowHoveringUI(const FName& ItemName, const FPAItemTable& ItemTable);
+	void OnShowHoveringUI(const FName& ItemName, const FPAItemTable& ItemTable);
 	
 	UFUNCTION(BlueprintCallable, Category =Hovering)
-	void HideHoveringUI(const class UPAItemButton* Button);
+	void OnHideHoveringUI(const class UPAItemButton* Button);
 	
 protected:
 	UPROPERTY(meta = (BindWidget))

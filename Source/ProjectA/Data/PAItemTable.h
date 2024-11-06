@@ -36,6 +36,9 @@ struct FPAItemTable : public FPADataTable
 	FPAItemTable(){};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemData)
+	FString ItemName;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemData)
 	float PhysicalDamage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemData)
@@ -72,5 +75,5 @@ struct FInnerItemTable
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInnerStruct")
-	TMap<FName, FPAItemTable> InnerMap; 
+	TMap<int32, FPAItemTable> InnerMap; 
 };

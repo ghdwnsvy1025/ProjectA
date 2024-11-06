@@ -20,7 +20,7 @@ public:
 	UPAItemButton();
 
 public:
-	void SetValue(const FName& ItemName, const FPAItemTable& ItemTable)
+	void Init(const FName& ItemName, const FPAItemTable& ItemTable)
 	{
 		MyItemName = ItemName;
 		MyItemTable= ItemTable;

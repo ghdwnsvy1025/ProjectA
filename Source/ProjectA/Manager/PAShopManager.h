@@ -25,7 +25,7 @@ public:
 			Table = ShopTables[TableName].InnerMap;
 		}
 	}
-
+	void BuyItem(FName TagName, int32 Index);
 protected:
 	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 

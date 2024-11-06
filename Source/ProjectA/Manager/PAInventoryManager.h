@@ -15,7 +15,7 @@ class PROJECTA_API UPAInventoryManager : public UGameInstanceSubsystem
 
 public:
 	void Init(UWorld* World);
-	bool GetTable(EItemType ItemType, TMap<FName, FPAItemTable>& Table) 
+	bool GetTable(EItemType ItemType, FInnerItemTable& InnerTable) 
 	{
 		if (!ItemTables.Find(ItemType))
 		{
@@ -23,7 +23,7 @@ public:
 		}
 		else
 		{
-			Table = ItemTables[ItemType].InnerMap;
+			InnerTable = ItemTables[ItemType];
 			return  true;
 		}
 	}

@@ -21,7 +21,6 @@ void UPAItemManager::Init(UWorld* World)
 
 	PA_LOG(LogTest,Log,TEXT("ItemManger Load Complete!"));
 }
-
 void UPAItemManager::LoadItem(EItemType ItemType, FName& BPTableName)
 {
 	UWorld* World = GetWorld();
@@ -34,15 +33,35 @@ void UPAItemManager::LoadItem(EItemType ItemType, FName& BPTableName)
 		return;
 	}
 
-	FInnerItemTable InnerTable;
-	InnerTable.InnerMap = ItemTable;
-	
-	// FString LevelName = World->GetMapName();
-	// LevelName.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
-	ItemTables.Emplace(ItemType,  InnerTable);
+	for(auto Pair : ItemTable)
+	{
+		int32 Index = Pair.Value.DataIndex;
+		ItemTables.Emplace(Index,Pair.Value);
+	}
 
 	LoadTexture(ItemType, ItemTable);
 }
+
+// TMap<EItemType, InnerMap>
+// void UPAItemManager::LoadItem(EItemType ItemType, FName& BPTableName)
+// {
+// 	UWorld* World = GetWorld();
+// 	CHECK_NULLPTR_RETURN(World,);
+// 	
+// 	TMap<FName,FPAItemTable> ItemTable;
+// 	if(!World->GetSubsystem<UPADataManager>()->LoadData(BPTableName,ItemTable))
+// 	{
+// 		PA_LOG(LogTest,Warning,TEXT("Failed To Load %sTable"),*BPTableName.ToString());
+// 		return;
+// 	}
+//
+// 	FInnerItemTable InnerTable;
+// 	InnerTable.InnerMap = ItemTable;
+// 	
+// 	ItemTables.Emplace(ItemType,  InnerTable);
+//
+// 	LoadTexture(ItemType, ItemTable);
+// }
 
 void UPAItemManager::LoadTexture(EItemType ItemType, const TMap<FName,FPAItemTable>& ItemTable)
 {

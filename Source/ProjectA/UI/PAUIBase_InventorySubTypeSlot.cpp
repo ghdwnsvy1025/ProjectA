@@ -71,16 +71,16 @@ void UPAUIBase_InventorySubTypeSlot::Refresh()
 	CHECK_NULLPTR_RETURN(InventoryManager,);
 	CHECK_NULLPTR_RETURN(ItemManager,);
 
-	TMap<FName, FPAItemTable> ItemTable;
-	if (!InventoryManager->GetTable(ItemType, ItemTable))
+	FInnerItemTable InnerTable;
+	if (!InventoryManager->GetTable(ItemType, InnerTable))
 	{
 		PA_LOG(LogTest, Warning, TEXT("Failed To Load ItemTable"));
 		return;
 	}
 
-	for (auto& Pair : ItemTable)
+	for (auto& Pair : InnerTable.InnerMap)
 	{
-		FName ObjectName = Pair.Key;
+		FName ObjectName = *Pair.Value.ItemName;
 		FPAItemTable Table = Pair.Value;
 		FName SpriteName = FName(*Pair.Value.SpriteName);
 		int Quantity = InventoryManager->GetItemQuantity(ObjectName);
@@ -88,7 +88,7 @@ void UPAUIBase_InventorySubTypeSlot::Refresh()
 		float FontSize = 24.f;
 		// Button
 		UPAItemButton* Button = NewObject<UPAItemButton>(this, UPAItemButton::StaticClass());
-
+		Button->Init(ObjectName,Table);
 		// Horizon Box
 		UHorizontalBox* HorizontalBox = NewObject<UHorizontalBox>(this, UHorizontalBox::StaticClass());
 
@@ -163,9 +163,9 @@ void UPAUIBase_InventorySubTypeSlot::Refresh()
 			SpacerVerticalSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
 			SpacerVerticalSlot->SetPadding(FMargin(FVector2d(5.0, 5.0)));
 		}
-		Button->SetValue(ObjectName, Table);
-		Button->CustomOnHovered.AddDynamic(this, &UPAUIBase_InventorySubTypeSlot::ShowHoveringUI);
-		Button->CustomOnUnHovered.AddDynamic(this, &UPAUIBase_InventorySubTypeSlot::HideHoveringUI);
+		
+		Button->CustomOnHovered.AddDynamic(this, &UPAUIBase_InventorySubTypeSlot::OnShowHoveringUI);
+		Button->CustomOnUnHovered.AddDynamic(this, &UPAUIBase_InventorySubTypeSlot::OnHideHoveringUI);
 	}
 }
 
@@ -174,7 +174,7 @@ void UPAUIBase_InventorySubTypeSlot::OnVisibilityChangedEventFunc(ESlateVisibili
 	// Refresh();
 }
 
-void UPAUIBase_InventorySubTypeSlot::ShowHoveringUI(const FName& ItemName, const FPAItemTable& ItemTable)
+void UPAUIBase_InventorySubTypeSlot::OnShowHoveringUI(const FName& ItemName, const FPAItemTable& ItemTable)
 {
 	PA_LOG(LogTest, Log, TEXT("Hovering"));
 
@@ -187,7 +187,7 @@ void UPAUIBase_InventorySubTypeSlot::ShowHoveringUI(const FName& ItemName, const
 	UPAUIManager::Get().ShowPopup(PATAG_UI_POPUP_HOVERING.GetTagName(), ESlateVisibility::HitTestInvisible);
 }
 
-void UPAUIBase_InventorySubTypeSlot::HideHoveringUI(const UPAItemButton* Button)
+void UPAUIBase_InventorySubTypeSlot::OnHideHoveringUI(const UPAItemButton* Button)
 {
 	// if(!IsHovered())
 	// {

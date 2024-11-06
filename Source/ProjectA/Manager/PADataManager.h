@@ -74,6 +74,7 @@ bool UPADataManager::LoadData(FName BPTableName, TMap<FName, T>& OutTableData)
 	return  true;
 }
 
+
 // template <typename T>
 // void UPADataManager::LoadTable(UDataTable* DataTable, TMap<FName, T>& OutTableData)
 // {

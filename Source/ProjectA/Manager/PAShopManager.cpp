@@ -4,6 +4,7 @@
 #include "Manager/PAShopManager.h"
 
 #include "PADataManager.h"
+#include "Data/PAItemTable.h"
 #include "Tag/PAGameplayTag.h"
 
 void UPAShopManager::Init(UWorld* World)
@@ -32,6 +33,11 @@ void UPAShopManager::Init(UWorld* World)
 
 	
 	PA_LOG(LogTest,Log,TEXT("ShopManger Load Complete!"));
+}
+
+void UPAShopManager::BuyItem(FName TagName, int32 Index)
+{
+	
 }
 
 void UPAShopManager::OnWorldBeginPlay(UWorld& InWorld)

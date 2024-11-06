@@ -3,11 +3,11 @@
 
 #include "UI/PAItemButton.h"
 
+
 UPAItemButton::UPAItemButton()
 {
 	OnHovered.AddDynamic(this,&UPAItemButton::CustomOnHoveredFunc);
 	OnUnhovered.AddDynamic(this,&UPAItemButton::CustomOnUnHoveredFunc);
-	
 }
 
 void UPAItemButton::CustomOnHoveredFunc()

@@ -14,33 +14,37 @@ UCLASS()
 class PROJECTA_API UPAItemManager : public UWorldSubsystem
 {
 	GENERATED_BODY()
+
 public:
 	void Init(UWorld* World);
-	
-	void GetTable(EItemType ItmeType, TMap<FName, FPAItemTable>& Table) const
+
+	void GetTable(TMap<int32, FPAItemTable>& OutTable) const
 	{
-		if (ItemTables.Find(ItmeType))
-		{
-			Table = ItemTables[ItmeType].InnerMap;
-		}
+		OutTable = ItemTables;
 	}
-	UTexture2D* GetTexture(FName& TextureName) const 
+
+	UTexture2D* GetTexture(FName& TextureName) const
 	{
-		if(Textures.Find(TextureName))
+		if (Textures.Find(TextureName))
 		{
-			return  Textures[TextureName];
+			return Textures[TextureName];
 		}
 		else
 		{
-			return  NewObject<UTexture2D>();
+			return NewObject<UTexture2D>();
 		}
 	}
+
 private:
 	void LoadItem(EItemType ItemType, FName& BPTableName);
-	void LoadTexture(EItemType ItemType,  const TMap<FName,FPAItemTable>& ItemTable);
+	void LoadTexture(EItemType ItemType, const TMap<FName, FPAItemTable>& ItemTable);
+
 private:
+	// UPROPERTY(EditAnywhere, Category = ItemManager)
+	// TMap<EItemType,FInnerItemTable> ItemTables;
+
 	UPROPERTY(EditAnywhere, Category = ItemManager)
-	TMap<EItemType,FInnerItemTable> ItemTables;
+	TMap<int32, FPAItemTable> ItemTables;
 
 	UPROPERTY(EditAnywhere, Category = ItemManager)
 	TMap<FName, TObjectPtr<UTexture2D>> Textures;

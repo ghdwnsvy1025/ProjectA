@@ -13,13 +13,13 @@ struct FPAShopTable : public FPADataTable
 	FPAShopTable(){};
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShopData)
-	int Quantity;
+	int32 Quantity;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShopData)
-	int Price;
+	int32 Price;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShopData)
-	int ItemIndex;
+	int32 ItemIndex;
 };
 USTRUCT(BlueprintType)
 struct FInnerShopTable

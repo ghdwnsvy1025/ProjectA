@@ -13,5 +13,5 @@ struct FPADataTable : public FTableRowBase
 	FName TableName;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Data)
-	int DataIndex;
+	int32 DataIndex;
 };

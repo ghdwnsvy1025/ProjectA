@@ -38,6 +38,6 @@ void APAGameMode::StartPlay()
 	FString PreName = TEXT("UI.Scene.");
 	LevelName = PreName + LevelName;
 	
-	UPAUIManager::Get().ShowScene(GetData(LevelName));
+	// UPAUIManager::Get().ShowScene(GetData(LevelName));
 	UPAUIManager::Get().ShowPopup(PATAG_UI_POPUP_INVENTORY.GetTagName());
 }

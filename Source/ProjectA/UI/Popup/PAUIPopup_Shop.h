@@ -22,8 +22,15 @@ public:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeConstruct() override;
 	void Refresh();
+	
 	UFUNCTION()
 	void OnButtonClickedFun();
+
+	UFUNCTION(BlueprintCallable, Category =Hovering)
+	void OnShowHoveringUI(const FName& ItemName, const FPAItemTable& ItemTable);
+	
+	UFUNCTION(BlueprintCallable, Category =Hovering)
+	void OnHideHoveringUI(const class UPAItemButton* Button);
 private:
 	UFUNCTION()
 	void OnVisibilityChangedFunc(ESlateVisibility CurVisibility);
