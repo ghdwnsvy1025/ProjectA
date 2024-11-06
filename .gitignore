@@ -88,8 +88,8 @@ DerivedDataCache/*
 !/Config/**
 !/Plugins/**
 
-# Ignore all .uasset files
-*.uasset
+# Ignore Big Asset
+Content/Asset/Character/*
 
 # Only allow .umap files from /Content dir.
 !/Content/**/*.umap
