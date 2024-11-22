@@ -4,7 +4,7 @@
 #include "UI/PAUIBase_InventorySubTypeSlot.h"
 
 #include "PAItemButton.h"
-#include "PAUIPopup_Hovering.h"
+#include "UI/Popup/PAUIPopup_Hovering.h"
 #include "ProjectA.h"
 #include "Components/Button.h"
 #include "Components/ButtonSlot.h"

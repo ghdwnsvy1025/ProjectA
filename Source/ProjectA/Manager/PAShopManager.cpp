@@ -38,6 +38,7 @@ void UPAShopManager::Init(UWorld* World)
 void UPAShopManager::BuyItem(FName TagName, int32 Index)
 {
 	FInnerShopTable ShopTable = ShopTables[TagName];
+
 	
 }
 
