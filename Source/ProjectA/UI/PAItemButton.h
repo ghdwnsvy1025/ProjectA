@@ -10,6 +10,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCustomOnHovered, const FName&, ItemName, const FPAItemTable&, ItemTable);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCustomOnUnHovered,const UPAItemButton*, Button);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCustomOnClicked,const FPAItemTable&, ItemTable);
 
 UCLASS()
 class PROJECTA_API UPAItemButton : public UButton
@@ -29,12 +30,16 @@ public:
 	void CustomOnHoveredFunc();
 	UFUNCTION()
 	void CustomOnUnHoveredFunc();
+	UFUNCTION()
+	void CustomOnClickedFunc();
 
 public:
 	UPROPERTY()
 	FCustomOnHovered CustomOnHovered;
 	UPROPERTY()
 	FCustomOnUnHovered CustomOnUnHovered;
+	UPROPERTY()
+	FCustomOnClicked CustomOnClicked;
 	UPROPERTY()
 	FName MyItemName;
 

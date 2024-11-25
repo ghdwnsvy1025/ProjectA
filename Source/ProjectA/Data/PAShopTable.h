@@ -26,6 +26,6 @@ struct FInnerShopTable
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShopManager")
-	TMap<FName, FPAShopTable> InnerMap; 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShopInnerTable")
+	TMap<int32, FPAShopTable> InnerMap; 
 };

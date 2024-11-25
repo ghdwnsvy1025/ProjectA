@@ -19,7 +19,7 @@ void UPAInventoryManager::Init(UWorld* World)
 	// To Do : Save 파일 Load해서 Map에 넣어야함
 
 	TMap<int32, FPAItemTable> TempItemTables;
-	ItemManager->GetTable(TempItemTables);
+	ItemManager->GetAllTable(TempItemTables);
 
 	FInnerItemTable WeaponInnerItemTable;
 	FInnerItemTable ArmorInnerTable;

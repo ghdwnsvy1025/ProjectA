@@ -16,8 +16,15 @@ void UPAShopManager::Init(UWorld* World)
 	{
 		PA_LOG(LogTest,Warning,TEXT("Failed To Load GranTableData"));
 	}
+	TMap<int32, FPAShopTable> GranInnerMap;
+	for(auto Pair : GranTable)
+	{
+		int32 Index = Pair.Value.DataIndex;
+		GranInnerMap.Emplace(Index,Pair.Value);
+	}
+
 	FInnerShopTable InnerGranTable;
-	InnerGranTable.InnerMap = GranTable;
+	InnerGranTable.InnerMap = GranInnerMap;
 	ShopTables.Emplace(PATAG_INTERACTABLEOBJECT_SHOP_GRAN.GetTagName(), InnerGranTable);
 	
 	// Data Load
@@ -27,19 +34,32 @@ void UPAShopManager::Init(UWorld* World)
 		PA_LOG(LogTest,Warning,TEXT("Failed To Load TromboTableData"));
 
 	}
+	TMap<int32, FPAShopTable> TromboInnerMap;
+	for(auto Pair : TromboTable)
+	{
+		int32 Index = Pair.Value.DataIndex;
+		TromboInnerMap.Emplace(Index,Pair.Value);
+	}
 	FInnerShopTable InnerTromboTable;
-	InnerTromboTable.InnerMap = TromboTable;
+	InnerTromboTable.InnerMap = TromboInnerMap;
 	ShopTables.Emplace(PATAG_INTERACTABLEOBJECT_SHOP_TROMBO.GetTagName(), InnerTromboTable);
 
 	
 	PA_LOG(LogTest,Log,TEXT("ShopManger Load Complete!"));
 }
 
-void UPAShopManager::BuyItem(FName TagName, int32 Index)
-{
-	FInnerShopTable ShopTable = ShopTables[TagName];
 
+void UPAShopManager::BuyItem(const FName& ShopName, const FPAItemTable& ItemTable)
+{
 	
+	// 1. Inven의 돈 확인 후, 돈이 충분하면 구입
+
+	if(ShopTables.Contains(ShopName))
+	{
+		FInnerShopTable InnerShopTable = ShopTables[ShopName];
+		
+		
+	}
 }
 
 void UPAShopManager::OnWorldBeginPlay(UWorld& InWorld)

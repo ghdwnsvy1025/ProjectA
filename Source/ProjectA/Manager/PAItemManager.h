@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ProjectA.h"
 #include "Data/PAItemTable.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "PAItemManager.generated.h"
@@ -18,11 +19,23 @@ class PROJECTA_API UPAItemManager : public UWorldSubsystem
 public:
 	void Init(UWorld* World);
 
-	void GetTable(TMap<int32, FPAItemTable>& OutTable) const
+	void GetAllTable(TMap<int32, FPAItemTable>& OutTable) const
 	{
 		OutTable = ItemTables;
 	}
 
+	void GetTable(int32 ItemIndex, FPAItemTable& OutTable) const
+	{
+		if(ItemTables.Contains(ItemIndex))
+		{
+			OutTable = ItemTables[ItemIndex];
+		}
+		else
+		{
+			PA_LOG(LogTest,Log,TEXT("Failed To Get ItemTable Index : %d"), ItemIndex);
+		}
+	}
+	
 	UTexture2D* GetTexture(FName& TextureName) const
 	{
 		if (Textures.Find(TextureName))

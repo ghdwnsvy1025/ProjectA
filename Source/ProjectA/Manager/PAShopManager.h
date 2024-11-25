@@ -5,10 +5,13 @@
 #include "CoreMinimal.h"
 #include "ProjectA.h"
 #include "Data/PAShopTable.h"
+
 #include "PAShopManager.generated.h"
 /**
  * 
  */
+
+struct FPAItemTable;
 
 UCLASS()
 class PROJECTA_API UPAShopManager : public UWorldSubsystem
@@ -17,7 +20,7 @@ class PROJECTA_API UPAShopManager : public UWorldSubsystem
 
 public:
 	void Init(UWorld* World);
-	void GetTable(FName TableName, TMap<FName, FPAShopTable>& Table) const
+	void GetTable(FName TableName, TMap<int32, FPAShopTable>& Table) const
 	{
 		if (ShopTables.Find(TableName))
 		{
@@ -25,11 +28,11 @@ public:
 			Table = ShopTables[TableName].InnerMap;
 		}
 	}
-	void BuyItem(FName TagName, int32 Index);
+	void BuyItem(const FName& ShopName, const FPAItemTable& ItemTable);
 protected:
 	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 
 private:
 	UPROPERTY(EditAnywhere, Category = ShopManager)
-	TMap<FName, FInnerShopTable> ShopTables;
+	TMap<FName, FInnerShopTable> ShopTables; // (상점 이름, 데이터)
 };

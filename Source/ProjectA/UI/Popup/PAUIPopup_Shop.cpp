@@ -14,6 +14,7 @@
 #include "Components/TextBlock.h"
 #include "Components/VerticalBoxSlot.h"
 #include "Data/PAShopTable.h"
+#include "Manager/PAItemManager.h"
 #include "Manager/PAShopManager.h"
 #include "Manager/PAUIManager.h"
 #include "Tag/PAGameplayTag.h"
@@ -46,18 +47,24 @@ void UPAUIPopup_Shop::Refresh()
 	CHECK_NULLPTR_RETURN(VerticalBox,);
 	CHECK_NULLPTR_RETURN(ScrollBox,);
 
-	TMap<FName, FPAShopTable> ShopTable;
+	TMap<int32, FPAShopTable> ShopTable;
 	World->GetSubsystem<UPAShopManager>()->GetTable(TagName, ShopTable);
 
 	for (auto& Pair : ShopTable)
 	{
-		FName ObjectName = Pair.Key;
-		FPAShopTable Table = Pair.Value;
 		float FontSize = 20.f;
+
+		FPAShopTable Table = Pair.Value;
+		int32 DataIndex = Table.DataIndex;
+		FName ObjectName = Table.TableName;
+		int32 ItemIndex = Table.ItemIndex;
+		FPAItemTable ItemTable;
+		World->GetSubsystem<UPAItemManager>()->GetTable(ItemIndex, ItemTable);
+
 		// Button
 		UPAItemButton* Button = NewObject<UPAItemButton>(this, UPAItemButton::StaticClass());
-		
-		// Button->Init(ObjectName, Table);
+		Button->Init(ObjectName, ItemTable);
+		Button->CustomOnClicked.AddDynamic(this,&UPAUIPopup_Shop::OnBuyItemFunc);
 		// Horizon Box
 		UHorizontalBox* HorizontalBox = NewObject<UHorizontalBox>(this, UHorizontalBox::StaticClass());
 
@@ -209,4 +216,12 @@ void UPAUIPopup_Shop::OnShowHoveringUI(const FName& ItemName, const FPAItemTable
 void UPAUIPopup_Shop::OnHideHoveringUI(const class UPAItemButton* Button)
 {
 	UPAUIManager::Get().ClosePopup();
+}
+
+void UPAUIPopup_Shop::OnBuyItemFunc(const FPAItemTable& ItemTable)
+{
+	UWorld* World = GetWorld();
+	CHECK_NULLPTR_RETURN(World,);
+	
+	GetWorld()->GetSubsystem<UPAShopManager>()->BuyItem(TagName, ItemTable);
 }
